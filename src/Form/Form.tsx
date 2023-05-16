@@ -1,32 +1,75 @@
 import './Form.scss';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import Card from '../Card/Card';
+
+type FormData = {
+  name: string;
+  preparationTime: number;
+  type: DishType;
+  numberOfSlices: number;
+  diameter: number;
+  spiciness: number;
+  slicesOfBread: number;
+};
+enum DishType {
+  Pizza = 'Pizza',
+  Soup = 'Soup',
+  Sandwich = 'Sandwich',
+}
 
 const Form = () => {
-  //   const [selectedOption, setSelectedOption] = useState(undefined);
+  const [selectedOption, setSelectedOption] = useState(undefined);
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm();
-  //   const onSubmit = (data) => console.log(data);
+  } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      preparationTime: 0,
+      type: undefined,
+      numberOfSlices: undefined,
+      diameter: undefined,
+      spiciness: 5,
+      slicesOfBread: undefined,
+    },
+  });
+
   console.log(errors);
 
   //   const selectOptionHandler = (event) => {
   //     setSelectedOption(event.target.value);
   //   };
+  const watchSelectedOption = watch('type');
+  console.log(watchSelectedOption);
 
   return (
-    <div>
-      <form>
+    <Card>
+      <form
+        onSubmit={handleSubmit((data) => {
+          console.log(data);
+        })}
+      >
         <div>
           <label htmlFor="name">Name </label>
           <input
             id="name"
             type="text"
             placeholder="Name"
-            {...register('Name', { required: true, min: 0, maxLength: 80 })}
+            {...register('name', {
+              required: 'This is required',
+              min: 0,
+              maxLength: 80,
+              minLength: {
+                value: 4,
+                message: 'Min length is 4',
+              },
+            })}
           />
+          <p>{errors.name?.message}</p>
         </div>
         <div>
           <label htmlFor="preparationTime">Preparation Time </label>
@@ -35,7 +78,7 @@ const Form = () => {
             type="time"
             placeholder="Preparation time"
             step={1}
-            {...register('Preparation time', {
+            {...register('preparationTime', {
               required: true,
               max: 24,
               min: 0,
@@ -44,7 +87,7 @@ const Form = () => {
         </div>
         <div>
           <label htmlFor="type">Dish Type </label>
-          <select {...register('Type', { required: true })}>
+          <select {...register('type', { required: true })}>
             <option value="Pizza">Pizza</option>
             <option value="Soup">Soup</option>
             <option value="Sandwich">Sandwich</option>
@@ -56,20 +99,21 @@ const Form = () => {
             id="numberOfSlices"
             type="number"
             placeholder="Number of slices"
-            {...register('Number of slices', {
+            {...register('numberOfSlices', {
               required: true,
               max: 8,
               min: 0,
             })}
           />
         </div>
+
         <div>
           <label htmlFor="diameter">Diameter </label>
           <input
             id="diameter"
             type="number"
             placeholder="Diameter"
-            {...register('Diameter', { required: true, max: 60, min: 0 })}
+            {...register('diameter', { required: true, max: 60, min: 0 })}
           />
         </div>
         <div>
@@ -78,7 +122,7 @@ const Form = () => {
             id="spiciness"
             type="range"
             placeholder="Spiciness"
-            {...register('Spiciness', { required: true, max: 10, min: 1 })}
+            {...register('spiciness', { required: true, max: 10, min: 1 })}
           />
         </div>
         <div>
@@ -87,12 +131,12 @@ const Form = () => {
             id="slicesOfBread"
             type="number"
             placeholder="Slices of bread"
-            {...register('Slices of bread', { max: 10, min: 1 })}
+            {...register('slicesOfBread', { max: 10, min: 1 })}
           />
         </div>
         <input type="submit" />
       </form>
-    </div>
+    </Card>
   );
 };
 
