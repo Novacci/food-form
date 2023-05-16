@@ -1,7 +1,12 @@
 import './App.scss';
+import Form from './Form/Form';
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <Form />
+    </>
+  );
 }
 
 export default App;
