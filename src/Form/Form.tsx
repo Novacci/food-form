@@ -1,6 +1,5 @@
 import './Form.scss';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import Card from '../Card/Card';
 
 type FormData = {
@@ -19,8 +18,6 @@ enum DishType {
 }
 
 const Form = () => {
-  const [selectedOption, setSelectedOption] = useState(undefined);
-
   const {
     register,
     handleSubmit,
@@ -40,9 +37,6 @@ const Form = () => {
 
   console.log(errors);
 
-  //   const selectOptionHandler = (event) => {
-  //     setSelectedOption(event.target.value);
-  //   };
   const watchSelectedOption = watch('type');
   console.log(watchSelectedOption);
 
@@ -93,47 +87,56 @@ const Form = () => {
             <option value="Sandwich">Sandwich</option>
           </select>
         </div>
-        <div>
-          <label htmlFor="numberOfSlices">Number of slices </label>
-          <input
-            id="numberOfSlices"
-            type="number"
-            placeholder="Number of slices"
-            {...register('numberOfSlices', {
-              required: true,
-              max: 8,
-              min: 0,
-            })}
-          />
-        </div>
 
-        <div>
-          <label htmlFor="diameter">Diameter </label>
-          <input
-            id="diameter"
-            type="number"
-            placeholder="Diameter"
-            {...register('diameter', { required: true, max: 60, min: 0 })}
-          />
-        </div>
-        <div>
-          <label htmlFor="spiciness">Spiciness</label>
-          <input
-            id="spiciness"
-            type="range"
-            placeholder="Spiciness"
-            {...register('spiciness', { required: true, max: 10, min: 1 })}
-          />
-        </div>
-        <div>
-          <label htmlFor="slicesOfBread">Slices of bread </label>
-          <input
-            id="slicesOfBread"
-            type="number"
-            placeholder="Slices of bread"
-            {...register('slicesOfBread', { max: 10, min: 1 })}
-          />
-        </div>
+        {watchSelectedOption === DishType.Pizza && (
+          <>
+            <div>
+              <label htmlFor="numberOfSlices">Number of slices </label>
+              <input
+                id="numberOfSlices"
+                type="number"
+                placeholder="Number of slices"
+                {...register('numberOfSlices', {
+                  required: true,
+                  max: 8,
+                  min: 0,
+                })}
+              />
+            </div>
+            <div>
+              <label htmlFor="diameter">Diameter </label>
+              <input
+                id="diameter"
+                type="number"
+                placeholder="Diameter"
+                {...register('diameter', { required: true, max: 60, min: 0 })}
+              />
+            </div>
+          </>
+        )}
+        {watchSelectedOption === DishType.Soup && (
+          <div>
+            <label htmlFor="spiciness">Spiciness</label>
+            <input
+              id="spiciness"
+              type="range"
+              placeholder="Spiciness"
+              {...register('spiciness', { required: true, max: 10, min: 1 })}
+            />
+          </div>
+        )}
+        {watchSelectedOption === DishType.Sandwich && (
+          <div>
+            <label htmlFor="slicesOfBread">Slices of bread </label>
+            <input
+              id="slicesOfBread"
+              type="number"
+              placeholder="Slices of bread"
+              {...register('slicesOfBread', { max: 10, min: 1 })}
+            />
+          </div>
+        )}
+
         <input type="submit" />
       </form>
     </Card>
