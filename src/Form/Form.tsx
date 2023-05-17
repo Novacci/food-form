@@ -1,7 +1,9 @@
 import './Form.scss';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import Card from '../Card/Card';
 import foodImage from '../Images/blueSandwich.jpg';
+import Slider from '@mui/material/Slider';
+import Box from '@mui/material/Box';
 
 type FormData = {
   name: string;
@@ -22,6 +24,7 @@ enum DishType {
 const Form = () => {
   const {
     register,
+    control,
     handleSubmit,
     watch,
     formState: { errors },
@@ -29,7 +32,7 @@ const Form = () => {
     defaultValues: {
       name: '',
       preparationTime: '00:00:00',
-      type: undefined,
+      type: DishType.Soup,
       numberOfSlices: undefined,
       diameter: undefined,
       spiciness: 0,
@@ -40,7 +43,6 @@ const Form = () => {
   console.log(errors);
 
   const watchSelectedType = watch('type');
-  console.log(watchSelectedType);
   const watchSpiciness = watch('spiciness');
 
   return (
@@ -53,7 +55,7 @@ const Form = () => {
         <img src={foodImage} alt="Food" />
 
         <div>
-          <label htmlFor="name">Name </label>
+          <label htmlFor="name">Name</label>
           <input
             id="name"
             type="text"
@@ -71,7 +73,7 @@ const Form = () => {
           {/* <p>{errors.name?.message}</p> */}
         </div>
         <div>
-          <label htmlFor="preparationTime">Preparation Time </label>
+          <label htmlFor="preparationTime">Preparation Time</label>
           <input
             id="preparationTime"
             type="time"
@@ -85,7 +87,7 @@ const Form = () => {
           />
         </div>
         <div>
-          <label htmlFor="type">Dish Type </label>
+          <label htmlFor="type">Dish Type</label>
           <select {...register('type', { required: true })}>
             <option selected={true} disabled={true}>
               Choose your dish
@@ -99,9 +101,11 @@ const Form = () => {
         {watchSelectedType === DishType.Pizza && (
           <>
             <div>
-              <label htmlFor="numberOfSlices">Number of slices </label>
+              <label htmlFor="numberOfSlices">Number of slices</label>
               <input
                 id="numberOfSlices"
+                min="1"
+                max="8"
                 type="number"
                 placeholder="Number of slices"
                 {...register('numberOfSlices', {
@@ -112,8 +116,10 @@ const Form = () => {
               />
             </div>
             <div>
-              <label htmlFor="diameter">Diameter </label>
+              <label htmlFor="diameter">Diameter</label>
               <input
+                min="0"
+                max="60"
                 id="diameter"
                 type="number"
                 placeholder="Diameter"
@@ -123,26 +129,30 @@ const Form = () => {
           </>
         )}
         {watchSelectedType === DishType.Soup && (
-          <div>
-            <label htmlFor="spiciness">Spiciness</label>
-            <input
-              id="spiciness"
-              type="range"
-              placeholder="Spiciness"
-              min="1"
-              max="10"
-              {...register('spiciness', {
-                required: true,
-                max: 10,
-                min: 1,
-              })}
+          <Box width={290}>
+            <Controller
+              name="spiciness"
+              control={control}
+              rules={{ required: true, min: 1, max: 10 }}
+              render={({ field }) => (
+                <Slider
+                  defaultValue={1}
+                  valueLabelDisplay="auto"
+                  min={1}
+                  max={10}
+                  step={1}
+                  {...field}
+                />
+              )}
             />
-          </div>
+          </Box>
         )}
         {watchSelectedType === DishType.Sandwich && (
           <div>
-            <label htmlFor="slicesOfBread">Slices of bread </label>
+            <label htmlFor="slicesOfBread">Slices of bread</label>
             <input
+              min="1"
+              max="8"
               id="slicesOfBread"
               type="number"
               placeholder="Slices of bread"
