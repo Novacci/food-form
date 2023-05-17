@@ -1,5 +1,37 @@
+@mixin input-style() {
+  height: 2rem;
+  width: 18rem;
+  border-radius: 0.5rem;
+  border: none;
+}
+
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
+  font-size: large;
+}
+input {
+  @include input-style();
+  background-color: rgb(255, 255, 255);
+
+  outline: none;
+  text-align: center;
+}
+label {
+  padding-bottom: 0.5rem;
+  display: block;
+}
+
+select {
+  @include input-style();
+}
+
+input[type='submit'] {
+  text-transform: uppercase;
+  width: 8rem;
+  &:hover {
+    background-color: rgb(71, 241, 227);
+  }
 }

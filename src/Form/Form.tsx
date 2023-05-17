@@ -63,7 +63,7 @@ const Form = () => {
               },
             })}
           />
-          <p>{errors.name?.message}</p>
+          {/* <p>{errors.name?.message}</p> */}
         </div>
         <div>
           <label htmlFor="preparationTime">Preparation Time </label>

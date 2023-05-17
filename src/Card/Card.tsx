@@ -1,5 +1,11 @@
+import './Card.scss';
+
 const Card = (props: any) => {
-  return <div>{props.children}</div>;
+  return (
+    <div className="container-position">
+      <div className="form-container">{props.children}</div>
+    </div>
+  );
 };
 
 export default Card;

@@ -1,0 +1,18 @@
+.form-container {
+  box-shadow: 8px 8px 24px 0px rgba(46, 49, 76, 1);
+  background-color: rgb(197, 223, 247);
+  border-radius: 1rem;
+  width: 40rem;
+  height: 45rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-position {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
