@@ -1,8 +1,7 @@
 import './Form.scss';
 import { useForm } from 'react-hook-form';
 import Card from '../Card/Card';
-
-const foodImage = require('../Images/food.jpg');
+import foodImage from '../Images/food.jpg';
 
 type FormData = {
   name: string;
@@ -13,6 +12,7 @@ type FormData = {
   spiciness: number;
   slicesOfBread: number;
 };
+
 enum DishType {
   Pizza = 'Pizza',
   Soup = 'Soup',
@@ -49,9 +49,9 @@ const Form = () => {
           console.log(data);
         })}
       >
-        {/* <div className="img-styling">
+        <div className="img-styling">
           <img src={foodImage} alt="Food Image" />
-        </div> */}
+        </div>
         <div>
           <label htmlFor="name">Name </label>
           <input
