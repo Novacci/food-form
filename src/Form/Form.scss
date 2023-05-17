@@ -4,6 +4,16 @@
   border-radius: 0.5rem;
   border: none;
 }
+$blue-color: #2962ff;
+
+// img {
+//   overflow: hidden;
+//   height: 18rem;
+// }
+// .img-styling {
+//   height: 100%;
+//   width: 100%;
+// }
 
 form {
   display: flex;
@@ -32,6 +42,6 @@ input[type='submit'] {
   text-transform: uppercase;
   width: 8rem;
   &:hover {
-    background-color: rgb(71, 241, 227);
+    background-color: $blue-color;
   }
 }
