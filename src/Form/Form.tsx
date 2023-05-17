@@ -5,7 +5,7 @@ import foodImage from '../Images/blueSandwich.jpg';
 
 type FormData = {
   name: string;
-  preparationTime: number;
+  preparationTime: string;
   type: DishType;
   numberOfSlices: number;
   diameter: number;
@@ -28,19 +28,20 @@ const Form = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      preparationTime: 0,
+      preparationTime: '00:00:00',
       type: undefined,
       numberOfSlices: undefined,
       diameter: undefined,
-      spiciness: 5,
+      spiciness: 0,
       slicesOfBread: undefined,
     },
   });
 
   console.log(errors);
 
-  const watchSelectedOption = watch('type');
-  console.log(watchSelectedOption);
+  const watchSelectedType = watch('type');
+  console.log(watchSelectedType);
+  const watchSpiciness = watch('spiciness');
 
   return (
     <Card>
@@ -86,13 +87,16 @@ const Form = () => {
         <div>
           <label htmlFor="type">Dish Type </label>
           <select {...register('type', { required: true })}>
+            <option selected={true} disabled={true}>
+              Choose your dish
+            </option>
             <option value="Pizza">Pizza</option>
             <option value="Soup">Soup</option>
             <option value="Sandwich">Sandwich</option>
           </select>
         </div>
 
-        {watchSelectedOption === DishType.Pizza && (
+        {watchSelectedType === DishType.Pizza && (
           <>
             <div>
               <label htmlFor="numberOfSlices">Number of slices </label>
@@ -118,25 +122,35 @@ const Form = () => {
             </div>
           </>
         )}
-        {watchSelectedOption === DishType.Soup && (
+        {watchSelectedType === DishType.Soup && (
           <div>
             <label htmlFor="spiciness">Spiciness</label>
             <input
               id="spiciness"
               type="range"
               placeholder="Spiciness"
-              {...register('spiciness', { required: true, max: 10, min: 1 })}
+              min="1"
+              max="10"
+              {...register('spiciness', {
+                required: true,
+                max: 10,
+                min: 1,
+              })}
             />
           </div>
         )}
-        {watchSelectedOption === DishType.Sandwich && (
+        {watchSelectedType === DishType.Sandwich && (
           <div>
             <label htmlFor="slicesOfBread">Slices of bread </label>
             <input
               id="slicesOfBread"
               type="number"
               placeholder="Slices of bread"
-              {...register('slicesOfBread', { max: 10, min: 1 })}
+              {...register('slicesOfBread', {
+                required: true,
+                max: 10,
+                min: 1,
+              })}
             />
           </div>
         )}

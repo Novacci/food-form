@@ -1,6 +1,3 @@
-* {
-  box-sizing: border-box;
-}
 @mixin input-style() {
   height: 2rem;
   width: 18rem;
@@ -27,7 +24,6 @@ form {
 input {
   @include input-style();
   background-color: rgb(255, 255, 255);
-
   outline: none;
   text-align: center;
 }
@@ -38,6 +34,9 @@ label {
 
 select {
   @include input-style();
+  option {
+    text-align: center;
+  }
 }
 
 input[type='submit'] {
