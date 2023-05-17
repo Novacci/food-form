@@ -1,7 +1,7 @@
 import './Form.scss';
 import { useForm } from 'react-hook-form';
 import Card from '../Card/Card';
-import foodImage from '../Images/food.jpg';
+import foodImage from '../Images/blueSandwich.jpg';
 
 type FormData = {
   name: string;
@@ -49,9 +49,8 @@ const Form = () => {
           console.log(data);
         })}
       >
-        <div className="img-styling">
-          <img src={foodImage} alt="Food Image" />
-        </div>
+        <img src={foodImage} alt="Food" />
+
         <div>
           <label htmlFor="name">Name </label>
           <input
