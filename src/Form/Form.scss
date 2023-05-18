@@ -64,4 +64,11 @@ input[type='submit'] {
   flex-direction: column;
   display: flex;
   align-items: center;
+  pre {
+    font-size: large;
+  }
+}
+
+.alert-position {
+  margin-top: 5rem;
 }

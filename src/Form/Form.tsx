@@ -135,7 +135,11 @@ const Form = () => {
         spacing={2}
       >
         {success && (
-          <Alert onClose={() => closeSuccessAlertHandler()} severity="success">
+          <Alert
+            className="alert-position"
+            onClose={() => closeSuccessAlertHandler()}
+            severity="success"
+          >
             <AlertTitle>Success</AlertTitle>
             <strong>Data send completed with success!</strong>
           </Alert>
