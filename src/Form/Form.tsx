@@ -45,7 +45,30 @@ const Form = () => {
   const watchSelectedType = watch('type');
   const watchSpiciness = watch('spiciness');
 
+  const removePizzaProperties = (data: any) => {
+    delete data.diameter;
+    delete data.numberOfSlices;
+  };
+
+  const removeSoupProperies = (data: any) => {
+    delete data.spiciness;
+  };
+
+  const removeSandwichProperties = (data: any) => {
+    delete data.slicesOfBread;
+  };
+
   const onSubmit = (data: any) => {
+    if (watchSelectedType === DishType.Pizza) {
+      removeSoupProperies(data);
+      removeSandwichProperties(data);
+    } else if (watchSelectedType === DishType.Soup) {
+      removeSandwichProperties(data);
+      removePizzaProperties(data);
+    } else if (watchSelectedType === DishType.Sandwich) {
+      removeSoupProperies(data);
+      removePizzaProperties(data);
+    }
     console.log(data);
   };
 
@@ -104,7 +127,7 @@ const Form = () => {
         <div>
           <label htmlFor="type">Dish Type</label>
           <select {...register('type', { required: true })}>
-            <option selected={true} disabled={true} value="">
+            <option selected disabled value="">
               Choose your dish
             </option>
             <option value="Pizza">Pizza</option>
