@@ -92,7 +92,13 @@ const Form = () => {
         setSuccess(true);
         setServerResponse(await response.json());
       } else {
-        throw Error(response.status.toString());
+        let errorMessage = response.status.toString();
+        errorMessage += ' ';
+        let responseJson = await response.json();
+        for (const [key, value] of Object.entries(responseJson)) {
+          errorMessage += `${key}: ${value}\n`;
+        }
+        throw Error(errorMessage);
       }
     } catch (error: any) {
       setMessageError(error.message);
@@ -117,7 +123,6 @@ const Form = () => {
     if (timePattern.test(data.preparation_time)) {
       data.preparation_time = data.preparation_time + ':00';
     }
-    data.type = data.type.toLowerCase();
     sendData(data);
   };
 
@@ -211,9 +216,9 @@ const Form = () => {
             <option disabled value="">
               Choose your dish
             </option>
-            <option value="pizza">Pizza</option>
-            <option value="soup">Soup</option>
-            <option value="sandwich">Sandwich</option>
+            <option value={DishType.Pizza}>Pizza</option>
+            <option value={DishType.Soup}>Soup</option>
+            <option value={DishType.Sandwich}>Sandwich</option>
           </select>
           {errors.type?.type === 'required' && (
             <p className="warning">This field is required</p>
