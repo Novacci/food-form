@@ -255,6 +255,7 @@ const Form = () => {
                 min="0"
                 max="60"
                 id="diameter"
+                step="any"
                 type="number"
                 placeholder="Diameter"
                 {...register('diameter', { required: true, max: 60, min: 1 })}
