@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# Food-form
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Live demo](https://novacci.github.io/food-form/)
 
-## Available Scripts
+"Food-form" Page created with React & Typescript & SCSS & MaterialUI & React-form-hook
 
-In the project directory, you can run:
+## Getting started
 
-### `npm start`
+### Project setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+git clone https://github.com/Novacci/food-form.git
+cd food-form
+npm install
+npm start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Description & Screenshots
 
-### `npm test`
+Food-form is a project realized with the help of modern web development tools such as React, React-form-hook, TypeScript, SCSS, and MaterialUI. The project provides an excellent experience of useability and appearance for users. In terms of how the project looks like I tried to implement best practices:
+![image](https://github.com/Novacci/food-form/assets/110100579/23157f6b-116a-43f1-85b2-8d665bd3cc40)
+To prevent unnecessary rerenders and optimization improvement I used a well-known library (react-form-hook) to create form.
+The project contains custom validation for potential users mistakes:
+![image](https://github.com/Novacci/food-form/assets/110100579/a1498b32-5c11-4907-9535-d3ca057bc818)
+The user is informed about every step of the status of sending submitted data to the server. Here is an example of implementing a loader indicator from the MaterialUI library when the user waits for the answer:
+![image](https://github.com/Novacci/food-form/assets/110100579/4455836b-34bd-4b0f-8bb2-1970a1f7293f)
+In case of success the user receives information in the form of Alert from Material UI library,
+Submitted Data is also displayed below submit button:
+![image](https://github.com/Novacci/food-form/assets/110100579/2cf1c9f5-54c3-4bf9-95a8-dcbf76b4cf31)
+If the data transfer is unsuccessful, the user also gets information with the help of an Alert from the Material UI library with the response error message:
+![image](https://github.com/Novacci/food-form/assets/110100579/37a031e8-29b0-4af4-b09f-2816c7e52a76)
+My application is user friendly so i made it responsive and here is example of how it looks like on Iphone 12 Pro:
+![image](https://github.com/Novacci/food-form/assets/110100579/1c17a4e0-cfab-4646-be29-06e35422bf0b)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Application has been deployed thanks to the usage of GitHub Pages.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
