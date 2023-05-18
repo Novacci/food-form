@@ -102,7 +102,7 @@ const Form = () => {
       setIsLoading(false);
     }
   };
-  const timePattern = /\d\d:\d\d/;
+  const timePattern = /^\d\d:\d\d$/;
   const onSubmit = (data: FormData) => {
     if (watchSelectedType === DishType.Pizza) {
       removeSoupProperies(data);
@@ -181,7 +181,7 @@ const Form = () => {
             type="time"
             placeholder="Preparation time"
             step={1}
-            pattern={timePattern.toString()}
+            pattern="[0-2][0-4]:[0-5][0-9]:[0-5][0-9]"
             list="exampleTimesList"
             {...register('preparation_time', {
               required: true,
