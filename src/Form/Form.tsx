@@ -12,12 +12,12 @@ import { useState } from 'react';
 
 type FormData = {
   name: string;
-  preparation_time: number;
-  type: DishType;
-  no_of_slices: number;
-  diameter: number;
-  spiciness_scale: number;
-  slices_of_bread: number;
+  preparation_time: string;
+  type: DishType | string;
+  no_of_slices?: number;
+  diameter?: number;
+  spiciness_scale?: number;
+  slices_of_bread?: number;
 };
 
 enum DishType {
@@ -42,7 +42,7 @@ const Form = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      preparation_time: 0,
+      preparation_time: '',
       type: undefined,
       no_of_slices: undefined,
       diameter: undefined,
@@ -61,20 +61,20 @@ const Form = () => {
     setSuccess(false);
   };
 
-  const removePizzaProperties = (data: any) => {
+  const removePizzaProperties = (data: FormData) => {
     delete data.diameter;
     delete data.no_of_slices;
   };
 
-  const removeSoupProperies = (data: any) => {
+  const removeSoupProperies = (data: FormData) => {
     delete data.spiciness_scale;
   };
 
-  const removeSandwichProperties = (data: any) => {
+  const removeSandwichProperties = (data: FormData) => {
     delete data.slices_of_bread;
   };
 
-  const sendData = async (data: any) => {
+  const sendData = async (data: FormData) => {
     try {
       setIsLoading(true);
       const response = await fetch(
@@ -105,7 +105,7 @@ const Form = () => {
     }
   };
   let timePattern = /\d\d:\d\d/;
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
     if (watchSelectedType === DishType.Pizza) {
       removeSoupProperies(data);
       removeSandwichProperties(data);
