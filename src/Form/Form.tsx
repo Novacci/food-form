@@ -43,7 +43,6 @@ const Form = () => {
   console.log(errors);
 
   const watchSelectedType = watch('type');
-  const watchSpiciness = watch('spiciness');
 
   const removePizzaProperties = (data: any) => {
     delete data.diameter;
@@ -126,8 +125,8 @@ const Form = () => {
         </div>
         <div>
           <label htmlFor="type">Dish Type</label>
-          <select {...register('type', { required: true })}>
-            <option selected disabled value="">
+          <select defaultValue="" {...register('type', { required: true })}>
+            <option disabled value="">
               Choose your dish
             </option>
             <option value="Pizza">Pizza</option>
