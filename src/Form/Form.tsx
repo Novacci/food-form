@@ -4,24 +4,35 @@ import Card from '../Card/Card';
 import foodImage from '../Images/blueSandwich.jpg';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useState } from 'react';
 
 type FormData = {
   name: string;
-  preparationTime: number;
+  preparation_time: number;
   type: DishType;
-  numberOfSlices: number;
+  no_of_slices: number;
   diameter: number;
-  spiciness: number;
-  slicesOfBread: number;
+  spiciness_scale: number;
+  slices_of_bread: number;
 };
 
 enum DishType {
-  Pizza = 'Pizza',
-  Soup = 'Soup',
-  Sandwich = 'Sandwich',
+  Pizza = 'pizza',
+  Soup = 'soup',
+  Sandwich = 'sandwich',
 }
 
 const Form = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [messageError, setMessageError] = useState('');
+  const [serverResponse, setServerResponse] = useState<JSON>();
+
   const {
     register,
     control,
@@ -31,32 +42,69 @@ const Form = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      preparationTime: 0,
+      preparation_time: 0,
       type: undefined,
-      numberOfSlices: undefined,
+      no_of_slices: undefined,
       diameter: undefined,
-      spiciness: 0,
-      slicesOfBread: undefined,
+      spiciness_scale: 0,
+      slices_of_bread: undefined,
     },
   });
 
-  console.log(errors);
-
   const watchSelectedType = watch('type');
+
+  const closeErrorAlertHandler = () => {
+    setError(false);
+  };
+
+  const closeSuccessAlertHandler = () => {
+    setSuccess(false);
+  };
 
   const removePizzaProperties = (data: any) => {
     delete data.diameter;
-    delete data.numberOfSlices;
+    delete data.no_of_slices;
   };
 
   const removeSoupProperies = (data: any) => {
-    delete data.spiciness;
+    delete data.spiciness_scale;
   };
 
   const removeSandwichProperties = (data: any) => {
-    delete data.slicesOfBread;
+    delete data.slices_of_bread;
   };
 
+  const sendData = async (data: any) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        'https://umzzcc503l.execute-api.us-west-2.amazonaws.com/dishes',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        setSuccess(true);
+        setServerResponse(await response.json());
+      } else {
+        throw Error(response.status.toString());
+      }
+    } catch (error: any) {
+      console.log(error);
+      setMessageError(error.message);
+      setError(true);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+      console.log('Completed');
+    }
+  };
+  let timePattern = /\d\d:\d\d/;
   const onSubmit = (data: any) => {
     if (watchSelectedType === DishType.Pizza) {
       removeSoupProperies(data);
@@ -68,11 +116,40 @@ const Form = () => {
       removeSoupProperies(data);
       removePizzaProperties(data);
     }
-    console.log(data);
+    if (timePattern.test(data.preparation_time)) {
+      data.preparation_time = data.preparation_time + ':00';
+    }
+    data.type = data.type.toLowerCase();
+    sendData(data);
   };
 
   return (
     <Card>
+      <Stack
+        sx={{
+          display: 'flex',
+          width: 'auto',
+          position: 'absolute',
+          left: '50%',
+          top: '0',
+          transform: 'translate(-50%,-50%)',
+        }}
+        spacing={2}
+      >
+        {success && (
+          <Alert onClose={() => closeSuccessAlertHandler()} severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>Data send completed with success!</strong>
+          </Alert>
+        )}
+        {error && (
+          <Alert onClose={() => closeErrorAlertHandler()} severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>Request failed with status: {messageError}</strong>
+          </Alert>
+        )}
+      </Stack>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <img src={foodImage} alt="Food" />
 
@@ -92,20 +169,23 @@ const Form = () => {
             })}
           />
 
-          {errors.name?.type === 'required' && <p>This field is required</p>}
+          {errors.name?.type === 'required' && (
+            <p className="warning">This field is required</p>
+          )}
           {errors.name?.type === 'minLength' && (
-            <p>Your name is less than 4 characters</p>
+            <p className="warning">Your name is less than 4 characters</p>
           )}
         </div>
         <div>
-          <label htmlFor="preparationTime">Preparation Time</label>
+          <label htmlFor="preparation_time">Preparation Time</label>
           <input
-            id="preparationTime"
+            id="preparation_time"
             type="time"
             placeholder="Preparation time"
             step={1}
+            pattern={timePattern.toString()}
             list="exampleTimesList"
-            {...register('preparationTime', {
+            {...register('preparation_time', {
               required: true,
               max: 24,
               min: 0,
@@ -119,8 +199,8 @@ const Form = () => {
             <option value="01:15:00" />
             <option value="01:30:00" />
           </datalist>
-          {errors.preparationTime?.type === 'required' && (
-            <p>This field is required</p>
+          {errors.preparation_time?.type === 'required' && (
+            <p className="warning">This field is required</p>
           )}
         </div>
         <div>
@@ -129,36 +209,42 @@ const Form = () => {
             <option disabled value="">
               Choose your dish
             </option>
-            <option value="Pizza">Pizza</option>
-            <option value="Soup">Soup</option>
-            <option value="Sandwich">Sandwich</option>
+            <option value="pizza">Pizza</option>
+            <option value="soup">Soup</option>
+            <option value="sandwich">Sandwich</option>
           </select>
+          {errors.type?.type === 'required' && (
+            <p className="warning">This field is required</p>
+          )}
         </div>
-        {errors.type?.type === 'required' && <p>This field is required</p>}
         {watchSelectedType === DishType.Pizza && (
           <>
             <div>
-              <label htmlFor="numberOfSlices">Number of slices</label>
+              <label htmlFor="no_of_slices">Number of slices</label>
               <input
-                id="numberOfSlices"
+                id="no_of_slices"
                 min="1"
                 max="8"
                 type="number"
                 placeholder="Number of slices"
-                {...register('numberOfSlices', {
+                {...register('no_of_slices', {
                   required: true,
                   max: 8,
                   min: 0,
                 })}
               />
-              {errors.numberOfSlices?.type === 'required' && (
-                <p>This field is required</p>
+              {errors.no_of_slices?.type === 'required' && (
+                <p className="warning">This field is required</p>
               )}
-              {errors.numberOfSlices?.type === 'min' && (
-                <p>You can not have less than 1 slice of your pizza</p>
+              {errors.no_of_slices?.type === 'min' && (
+                <p className="warning">
+                  You can not have less than 1 slice of your pizza
+                </p>
               )}
-              {errors.numberOfSlices?.type === 'max' && (
-                <p>You can not have more than 8 slices of your pizza</p>
+              {errors.no_of_slices?.type === 'max' && (
+                <p className="warning">
+                  You can not have more than 8 slices of your pizza
+                </p>
               )}
             </div>
             <div>
@@ -173,15 +259,15 @@ const Form = () => {
               />
             </div>
             {errors.diameter?.type === 'required' && (
-              <p>This field is required</p>
+              <p className="warning">This field is required</p>
             )}
           </>
         )}
         {watchSelectedType === DishType.Soup && (
           <Box width={280}>
-            <label htmlFor="spiciness">Spiciness</label>
+            <label htmlFor="spiciness_scale">Spiciness</label>
             <Controller
-              name="spiciness"
+              name="spiciness_scale"
               control={control}
               rules={{ required: true, min: 1, max: 10 }}
               render={({ field }) => (
@@ -195,43 +281,61 @@ const Form = () => {
                 />
               )}
             />
-            {errors.spiciness?.type === 'required' && (
-              <p>This field is required</p>
+            {errors.spiciness_scale?.type === 'required' && (
+              <p className="warning">This field is required</p>
             )}
-            {errors.spiciness?.type === 'min' && (
-              <p>You need to have at least 1 in spiciness scale</p>
+            {errors.spiciness_scale?.type === 'min' && (
+              <p className="warning">
+                You need to have at least 1 in spiciness scale
+              </p>
             )}
           </Box>
         )}
         {watchSelectedType === DishType.Sandwich && (
           <div>
-            <label htmlFor="slicesOfBread">Slices of bread</label>
+            <label htmlFor="slices_of_bread">Slices of bread</label>
             <input
               min="1"
               max="8"
-              id="slicesOfBread"
+              id="slices_of_bread"
               type="number"
               placeholder="Slices of bread"
-              {...register('slicesOfBread', {
+              {...register('slices_of_bread', {
                 required: true,
                 max: 10,
                 min: 1,
               })}
             />
-            {errors.slicesOfBread?.type === 'required' && (
-              <p>This field is required</p>
+            {errors.slices_of_bread?.type === 'required' && (
+              <p className="warning">This field is required</p>
             )}
-            {errors.slicesOfBread?.type === 'min' && (
-              <p>You can not have less than 1 slice of your bread</p>
+            {errors.slices_of_bread?.type === 'min' && (
+              <p className="warning">
+                You can not have less than 1 slice of your bread
+              </p>
             )}
-            {errors.slicesOfBread?.type === 'max' && (
-              <p>You can not have more than 10 slice of your bread</p>
+            {errors.slices_of_bread?.type === 'max' && (
+              <p className="warning">
+                You can not have more than 10 slice of your bread
+              </p>
             )}
           </div>
         )}
 
-        <input type="submit" />
+        {isLoading ? (
+          <Box sx={{ display: 'flex' }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <input type="submit" />
+        )}
       </form>
+      {serverResponse && (
+        <div className="server-response-position">
+          <p>Server Response: </p>
+          <pre>{JSON.stringify(serverResponse, null, 4)}</pre>
+        </div>
+      )}
     </Card>
   );
 };

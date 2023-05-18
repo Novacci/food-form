@@ -41,21 +41,27 @@ select {
 
 input[type='submit'] {
   text-transform: uppercase;
+  margin-bottom: 1.5rem;
   width: 8rem;
   &:hover {
     background-color: $blue-color;
   }
 }
 
-p {
+.warning {
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
   text-shadow: 2px 2px 6px #fd2e77;
   color: #bf1650;
   margin: 0.5rem 0;
 }
-
-p::before {
+.warning::before {
   display: inline;
   content: '⚠ ';
+}
+
+.server-response-position {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
