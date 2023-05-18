@@ -32,7 +32,7 @@ const Form = () => {
     defaultValues: {
       name: '',
       preparationTime: '00:00:00',
-      type: DishType.Soup,
+      type: undefined,
       numberOfSlices: undefined,
       diameter: undefined,
       spiciness: 0,
@@ -49,7 +49,14 @@ const Form = () => {
     <Card>
       <form
         onSubmit={handleSubmit((data) => {
+          // if (
+          //   watchSelectedType !== DishType.Pizza &&
+          //   watchSelectedType !== DishType.Sandwich &&
+          //   watchSelectedType !== DishType.Soup
+          // ) {
           console.log(data);
+          //   return <p>Please choose the type of your Dish</p>;
+          // }
         })}
       >
         <img src={foodImage} alt="Food" />
@@ -62,7 +69,6 @@ const Form = () => {
             placeholder="Name"
             {...register('name', {
               required: 'This is required',
-              min: 0,
               maxLength: 80,
               minLength: {
                 value: 4,
@@ -70,7 +76,13 @@ const Form = () => {
               },
             })}
           />
-          {/* <p>{errors.name?.message}</p> */}
+
+          {/* {errors.name && errors.name.type === 'required' && (
+            <p>This field is required</p>
+          )}
+          {errors.name && errors.name.type === 'minLength' && (
+            <p>Your name is less than 4 characters</p>
+          )} */}
         </div>
         <div>
           <label htmlFor="preparationTime">Preparation Time</label>
@@ -114,6 +126,14 @@ const Form = () => {
                   min: 0,
                 })}
               />
+              {/* {errors.numberOfSlices &&
+                errors.numberOfSlices.type === 'min' && (
+                  <p>You can not have less than 1 slice of your pizza</p>
+                )} */}
+              {/* {errors.numberOfSlices &&
+                errors.numberOfSlices.type === 'max' && (
+                  <p>You can not have more than 8 slices of your pizza</p>
+                )} */}
             </div>
             <div>
               <label htmlFor="diameter">Diameter</label>
@@ -162,6 +182,14 @@ const Form = () => {
                 min: 1,
               })}
             />
+            {/* {errors.slicesOfBread &&
+                errors.slicesOfBread.type === 'min' && (
+                  <p>You can not have less than 1 slice of your bread</p>
+                )} */}
+            {/* {errors.slicesOfBread &&
+                errors.slicesOfBread.type === 'max' && (
+                  <p>You can not have more than 10 slice of your bread</p>
+                )} */}
           </div>
         )}
 
