@@ -225,14 +225,14 @@ const Form = () => {
               <label htmlFor="no_of_slices">Number of slices</label>
               <input
                 id="no_of_slices"
-                min="1"
+                min="0"
                 max="8"
                 type="number"
                 placeholder="Number of slices"
                 {...register('no_of_slices', {
                   required: true,
                   max: 8,
-                  min: 0,
+                  min: 1,
                 })}
               />
               {errors.no_of_slices?.type === 'required' && (
@@ -257,11 +257,21 @@ const Form = () => {
                 id="diameter"
                 type="number"
                 placeholder="Diameter"
-                {...register('diameter', { required: true, max: 60, min: 0 })}
+                {...register('diameter', { required: true, max: 60, min: 1 })}
               />
             </div>
             {errors.diameter?.type === 'required' && (
               <p className="warning">This field is required</p>
+            )}
+            {errors.diameter?.type === 'min' && (
+              <p className="warning">
+                Your pizza must not have a diameter smaller than 1
+              </p>
+            )}
+            {errors.diameter?.type === 'max' && (
+              <p className="warning">
+                Your pizza must be no larger than 60 in diameter
+              </p>
             )}
           </>
         )}
@@ -297,8 +307,8 @@ const Form = () => {
           <div>
             <label htmlFor="slices_of_bread">Slices of bread</label>
             <input
-              min="1"
-              max="8"
+              min="0"
+              max="10"
               id="slices_of_bread"
               type="number"
               placeholder="Slices of bread"
