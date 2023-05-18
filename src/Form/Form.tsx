@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 
 type FormData = {
   name: string;
-  preparationTime: string;
+  preparationTime: number;
   type: DishType;
   numberOfSlices: number;
   diameter: number;
@@ -31,7 +31,7 @@ const Form = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      preparationTime: '00:00:00',
+      preparationTime: 0,
       type: undefined,
       numberOfSlices: undefined,
       diameter: undefined,
@@ -45,20 +45,13 @@ const Form = () => {
   const watchSelectedType = watch('type');
   const watchSpiciness = watch('spiciness');
 
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+
   return (
     <Card>
-      <form
-        onSubmit={handleSubmit((data) => {
-          // if (
-          //   watchSelectedType !== DishType.Pizza &&
-          //   watchSelectedType !== DishType.Sandwich &&
-          //   watchSelectedType !== DishType.Soup
-          // ) {
-          console.log(data);
-          //   return <p>Please choose the type of your Dish</p>;
-          // }
-        })}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <img src={foodImage} alt="Food" />
 
         <div>
@@ -77,12 +70,10 @@ const Form = () => {
             })}
           />
 
-          {/* {errors.name && errors.name.type === 'required' && (
-            <p>This field is required</p>
-          )}
-          {errors.name && errors.name.type === 'minLength' && (
+          {errors.name?.type === 'required' && <p>This field is required</p>}
+          {errors.name?.type === 'minLength' && (
             <p>Your name is less than 4 characters</p>
-          )} */}
+          )}
         </div>
         <div>
           <label htmlFor="preparationTime">Preparation Time</label>
@@ -91,17 +82,29 @@ const Form = () => {
             type="time"
             placeholder="Preparation time"
             step={1}
+            list="exampleTimesList"
             {...register('preparationTime', {
               required: true,
               max: 24,
               min: 0,
             })}
           />
+          <datalist id="exampleTimesList">
+            <option value="00:15:00" />
+            <option value="00:30:00" />
+            <option value="00:45:00" />
+            <option value="01:00:00" />
+            <option value="01:15:00" />
+            <option value="01:30:00" />
+          </datalist>
+          {errors.preparationTime?.type === 'required' && (
+            <p>This field is required</p>
+          )}
         </div>
         <div>
           <label htmlFor="type">Dish Type</label>
           <select {...register('type', { required: true })}>
-            <option selected={true} disabled={true}>
+            <option selected={true} disabled={true} value="">
               Choose your dish
             </option>
             <option value="Pizza">Pizza</option>
@@ -109,7 +112,7 @@ const Form = () => {
             <option value="Sandwich">Sandwich</option>
           </select>
         </div>
-
+        {errors.type?.type === 'required' && <p>This field is required</p>}
         {watchSelectedType === DishType.Pizza && (
           <>
             <div>
@@ -126,14 +129,15 @@ const Form = () => {
                   min: 0,
                 })}
               />
-              {/* {errors.numberOfSlices &&
-                errors.numberOfSlices.type === 'min' && (
-                  <p>You can not have less than 1 slice of your pizza</p>
-                )} */}
-              {/* {errors.numberOfSlices &&
-                errors.numberOfSlices.type === 'max' && (
-                  <p>You can not have more than 8 slices of your pizza</p>
-                )} */}
+              {errors.numberOfSlices?.type === 'required' && (
+                <p>This field is required</p>
+              )}
+              {errors.numberOfSlices?.type === 'min' && (
+                <p>You can not have less than 1 slice of your pizza</p>
+              )}
+              {errors.numberOfSlices?.type === 'max' && (
+                <p>You can not have more than 8 slices of your pizza</p>
+              )}
             </div>
             <div>
               <label htmlFor="diameter">Diameter</label>
@@ -146,10 +150,14 @@ const Form = () => {
                 {...register('diameter', { required: true, max: 60, min: 0 })}
               />
             </div>
+            {errors.diameter?.type === 'required' && (
+              <p>This field is required</p>
+            )}
           </>
         )}
         {watchSelectedType === DishType.Soup && (
-          <Box width={290}>
+          <Box width={280}>
+            <label htmlFor="spiciness">Spiciness</label>
             <Controller
               name="spiciness"
               control={control}
@@ -165,6 +173,12 @@ const Form = () => {
                 />
               )}
             />
+            {errors.spiciness?.type === 'required' && (
+              <p>This field is required</p>
+            )}
+            {errors.spiciness?.type === 'min' && (
+              <p>You need to have at least 1 in spiciness scale</p>
+            )}
           </Box>
         )}
         {watchSelectedType === DishType.Sandwich && (
@@ -182,14 +196,15 @@ const Form = () => {
                 min: 1,
               })}
             />
-            {/* {errors.slicesOfBread &&
-                errors.slicesOfBread.type === 'min' && (
-                  <p>You can not have less than 1 slice of your bread</p>
-                )} */}
-            {/* {errors.slicesOfBread &&
-                errors.slicesOfBread.type === 'max' && (
-                  <p>You can not have more than 10 slice of your bread</p>
-                )} */}
+            {errors.slicesOfBread?.type === 'required' && (
+              <p>This field is required</p>
+            )}
+            {errors.slicesOfBread?.type === 'min' && (
+              <p>You can not have less than 1 slice of your bread</p>
+            )}
+            {errors.slicesOfBread?.type === 'max' && (
+              <p>You can not have more than 10 slice of your bread</p>
+            )}
           </div>
         )}
 
