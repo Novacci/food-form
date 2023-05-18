@@ -95,16 +95,14 @@ const Form = () => {
         throw Error(response.status.toString());
       }
     } catch (error: any) {
-      console.log(error);
       setMessageError(error.message);
       setError(true);
       console.error(error);
     } finally {
       setIsLoading(false);
-      console.log('Completed');
     }
   };
-  let timePattern = /\d\d:\d\d/;
+  const timePattern = /\d\d:\d\d/;
   const onSubmit = (data: FormData) => {
     if (watchSelectedType === DishType.Pizza) {
       removeSoupProperies(data);
@@ -131,7 +129,7 @@ const Form = () => {
           width: 'auto',
           position: 'absolute',
           left: '50%',
-          top: '0',
+          top: { xs: '10%', sm: '0' },
           transform: 'translate(-50%,-50%)',
         }}
         spacing={2}
