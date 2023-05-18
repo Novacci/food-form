@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/food-form/static/css/main.f9c36652.css",
-    "main.js": "/food-form/static/js/main.3e30b5e1.js",
+    "main.css": "/food-form/static/css/main.218cc4e9.css",
+    "main.js": "/food-form/static/js/main.193c24cf.js",
     "static/media/blueSandwich.jpg": "/food-form/static/media/blueSandwich.23797805ec71a7fe04a8.jpg",
     "index.html": "/food-form/index.html",
-    "main.f9c36652.css.map": "/food-form/static/css/main.f9c36652.css.map",
-    "main.3e30b5e1.js.map": "/food-form/static/js/main.3e30b5e1.js.map"
+    "main.218cc4e9.css.map": "/food-form/static/css/main.218cc4e9.css.map",
+    "main.193c24cf.js.map": "/food-form/static/js/main.193c24cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.f9c36652.css",
-    "static/js/main.3e30b5e1.js"
+    "static/css/main.218cc4e9.css",
+    "static/js/main.193c24cf.js"
   ]
 }
